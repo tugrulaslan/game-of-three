@@ -36,7 +36,6 @@
 					console.log("Your current session is: " + url);
 					sessionId = url;
 	                console.log('Connected: ' + frame);
-<!--	               /user/b6o4yz77/queue/specific-user-->
 	                var queue = '/user/'+sessionId+'/queue/specific-user';
 	                console.log('will subscribe to: ' + queue);
 	                document.getElementById('sessionInfoDiv').style.visibility = 'visible;';
@@ -59,7 +58,6 @@
 
 	        function sendMessage() {
 
-<!--	        	var from = document.getElementById('from').value;-->
 	        	var from = sessionId;
 	            var text = document.getElementById('text').value;
 	            var to = nextPlayer;
@@ -74,7 +72,7 @@
 	            console.log('nextplayer is:' + nextPlayer);
 	            var p = document.createElement('p');
 	            p.style.wordWrap = 'break-word';
-	            p.appendChild(document.createTextNode(messageOutput.from + ": " + messageOutput.text + " (" + messageOutput.time + ")"));
+	            p.appendChild(document.createTextNode(messageOutput.from + ": " + messageOutput.text));
 	            response.appendChild(p);
 	        }
 

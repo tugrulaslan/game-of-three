@@ -34,8 +34,7 @@ public class GameService {
             number += Integer.parseInt(message.getText());
             number /= 3;
             map.put(NUMBER_KEY, number);
-            final String time = new SimpleDateFormat("HH:mm").format(new Date());
-            OutputMessage outputMessage = new OutputMessage(message.getFrom(), String.valueOf(number), time);
+            OutputMessage outputMessage = new OutputMessage(message.getFrom(), String.valueOf(number));
             String nextPlayer = message.getTo();
             outputMessage.setNextPlayer(message.getFrom());
             template.convertAndSendToUser(nextPlayer, SECURED_CHAT_SPECIFIC_USER, outputMessage);
@@ -61,15 +60,13 @@ public class GameService {
     private void initiateTheGame(Message message) {
         Integer number = Integer.valueOf(message.getText());
         map.put(NUMBER_KEY, number);
-        final String time = new SimpleDateFormat("HH:mm").format(new Date());
-        OutputMessage outputMessage = new OutputMessage("server", String.valueOf(number), time);
+        OutputMessage outputMessage = new OutputMessage("server", String.valueOf(number));
         outputMessage.setNextPlayer(retrievePlayerName(FIRST_PLAYER_SESSION_ID_KEY));
         template.convertAndSendToUser(retrievePlayerName(SECOND_PLAYER_SESSION_ID_KEY), SECURED_CHAT_SPECIFIC_USER, outputMessage);
     }
 
     private void letFirstPlayerBegin() {
-        final String time = new SimpleDateFormat("HH:mm").format(new Date());
-        OutputMessage outputMessage = new OutputMessage("server", "Fire the game", time);
+        OutputMessage outputMessage = new OutputMessage("server", "Fire the game");
         outputMessage.setNextPlayer(retrievePlayerName(SECOND_PLAYER_SESSION_ID_KEY));
         template.convertAndSendToUser(retrievePlayerName(FIRST_PLAYER_SESSION_ID_KEY), SECURED_CHAT_SPECIFIC_USER, outputMessage);
     }
