@@ -1,0 +1,111 @@
+<html>
+	<head>
+	    <title>Chat WebSocket</title>
+	    
+	    <script src="resources/js/sockjs-0.3.4.js"></script>
+	    <script src="resources/js/stomp.js"></script>
+	    
+	    <script type="text/javascript">
+			var sessionId = '';
+			var nextPlayer = '';
+	        var stompClient = null;
+
+	        function setConnected(connected) {
+
+	            document.getElementById('connect').disabled = connected;
+	            document.getElementById('disconnect').disabled = !connected;
+<!--	            document.getElementById('conversationDiv').style.visibility = connected ? 'visible' : 'hidden';-->
+	            document.getElementById('sessionInfoDiv').style.visibility = connected ? 'visible' : 'hidden';
+	            document.getElementById('response').innerHTML = '';
+
+	        }
+
+	        function connect() {
+
+	            var socket = new SockJS('/room');
+	            stompClient = Stomp.over(socket);
+
+
+	            stompClient.connect({}, function(frame) {
+	            	setConnected(true);
+					var url = stompClient.ws._transport.url;
+					console.log(stompClient.ws._transport.url);
+					url = url.replace("ws://localhost:8080/room/",  "");
+					url = url.replace("/websocket", "");
+					url = url.replace(/^[0-9]+\//, "");
+					console.log("Your current session is: " + url);
+					sessionId = url;
+	                console.log('Connected: ' + frame);
+<!--	               /user/b6o4yz77/queue/specific-user-->
+	                var queue = '/user/'+sessionId+'/queue/specific-user';
+	                console.log('will subscribe to: ' + queue);
+	                document.getElementById('sessionInfoDiv').style.visibility = 'visible;';
+	            	document.getElementById('player-sessionid').value = sessionId;
+	                stompClient.subscribe(queue, function(messageOutput) {
+	                    showMessageOutput(JSON.parse(messageOutput.body));
+	                });
+	            });
+	        }
+
+	        function disconnect() {
+
+	            if(stompClient != null) {
+	                stompClient.disconnect();
+	            }
+
+	            setConnected(false);
+	            console.log("Disconnected");
+	        }
+
+	        function sendMessage() {
+
+<!--	        	var from = document.getElementById('from').value;-->
+	        	var from = sessionId;
+	            var text = document.getElementById('text').value;
+	            var to = nextPlayer;
+	            stompClient.send("/app/chat", {}, JSON.stringify({'from':from, 'to':to, 'text':text}));
+	        }
+
+	        function showMessageOutput(messageOutput) {
+	        	console.log('inside messageoutput method');
+	        	document.getElementById('conversationDiv').style.display  = 'block';
+	            var response = document.getElementById('response');
+	            nextPlayer = messageOutput.nextPlayer;
+	            console.log('nextplayer is:' + nextPlayer);
+	            var p = document.createElement('p');
+	            p.style.wordWrap = 'break-word';
+	            p.appendChild(document.createTextNode(messageOutput.from + ": " + messageOutput.text + " (" + messageOutput.time + ")"));
+	            response.appendChild(p);
+	        }
+
+	    </script>
+	    
+	</head>
+	
+	<body onload="disconnect()">
+
+		<div>
+
+		
+<!--			<div>-->
+<!--				<input type="text" id="from" placeholder="Choose a nickname"/>-->
+<!--			</div>-->
+<!--			<br />-->
+		    <div>
+		        <button id="connect" onclick="connect();">Connect</button>
+		        <button id="disconnect" disabled="disabled" onclick="disconnect();">Disconnect</button>
+		    </div>
+			<br />
+			<div id="sessionInfoDiv">
+				Session Id: <input type="text" id="player-sessionid" disabled/>
+			</div>
+		    <br />
+		    <div id="conversationDiv" style="display: none;">
+		        <input type="text" id="text" placeholder="Write a message..."/>
+		        <button id="sendMessage" onclick="sendMessage();">Send</button>
+		        <p id="response"></p>
+		    </div>
+		</div>
+
+	</body>
+</html>
