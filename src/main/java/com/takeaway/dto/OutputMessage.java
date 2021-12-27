@@ -4,15 +4,15 @@ public class OutputMessage {
 
     private String from;
     private String nextPlayer;
-    private Integer text;
+    private Integer number;
 
     public OutputMessage() {
     }
 
-    public OutputMessage(final String from, final Integer text) {
+    public OutputMessage(final String from, final Integer number) {
 
         this.from = from;
-        this.text = text;
+        this.number = number;
     }
 
     public void setNextPlayer(String nextPlayer) {
@@ -23,8 +23,8 @@ public class OutputMessage {
         return nextPlayer;
     }
 
-    public Integer getText() {
-        return text;
+    public Integer getNumber() {
+        return number;
     }
 
     public String getFrom() {

@@ -82,16 +82,15 @@
 	        	var from = sessionId;
 	            var to = nextPlayer;
 	            var text = gameInitiated ? calculatedNumber : number;
-	            stompClient.send("/app/chat", {}, JSON.stringify({'from':from, 'to':to, 'text':text}));
+	            stompClient.send("/app/chat", {}, JSON.stringify({'from':from, 'to':to, 'number':text}));
 	        }
 
 	        function showMessageOutput(messageOutput) {
-	            if(messageOutput.text == null){
-<!--	            TODO:change text to number!"-->
+	            if(messageOutput.number == null){
 <!--	            	TODO: FIX WITH RANDOM ASSIGNMENT-->
 	            	number = 56;
 	            }else{
-	            	number = parseInt(messageOutput.text);
+	            	number = parseInt(messageOutput.number);
 	            	gameInitiated = true;
 	            }
 	            document.getElementById('text').value = number;
@@ -104,7 +103,7 @@
 	            console.log('nextplayer is:' + nextPlayer);
 	            var p = document.createElement('p');
 	            p.style.wordWrap = 'break-word';
-	            p.appendChild(document.createTextNode(messageOutput.from + ": " + messageOutput.text));
+	            p.appendChild(document.createTextNode(messageOutput.from + ": " + messageOutput.number));
 	            response.appendChild(p);
 	        }
 

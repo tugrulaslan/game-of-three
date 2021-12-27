@@ -3,13 +3,12 @@ package com.takeaway.dto;
 public class Message {
     private String from;
     private String to;
-    private Integer text;
-
-//    TODO: rename text to number and change to integer!
+    private Integer number;
 
     public String getFrom() {
         return from;
     }
+
     public void setFrom(String from) {
         this.from = from;
     }
@@ -17,13 +16,16 @@ public class Message {
     public String getTo() {
         return to;
     }
+
     public void setTo(String to) {
         this.to = to;
     }
-    public Integer getText() {
-        return text;
+
+    public Integer getNumber() {
+        return number;
     }
-    public void setText(Integer text) {
-        this.text = text;
+
+    public void setNumber(Integer number) {
+        this.number = number;
     }
 }
