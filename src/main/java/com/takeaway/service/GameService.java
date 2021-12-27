@@ -27,7 +27,7 @@ public class GameService {
         if (gameIsNotInitiated()) {
             initiateTheGame(message);
         } else {
-            map.put(NUMBER_KEY, Integer.parseInt(message.getText()));
+            map.put(NUMBER_KEY, message.getText());
 //            TODO: TRY TO USE INTEGER with the output messgage text number
             OutputMessage outputMessage = new OutputMessage(message.getFrom(), message.getText());
             String nextPlayer = message.getTo();
@@ -53,10 +53,10 @@ public class GameService {
     }
 
     private void initiateTheGame(Message message) {
-        Integer number = Integer.parseInt(message.getText());
+        Integer number = message.getText();
         //TODO: remove the number keeping logic wont be needed
         map.put(NUMBER_KEY, number);
-        OutputMessage outputMessage = new OutputMessage("server", String.valueOf(number));
+        OutputMessage outputMessage = new OutputMessage("server", number);
         outputMessage.setNextPlayer(retrievePlayerName(FIRST_PLAYER_SESSION_ID_KEY));
         template.convertAndSendToUser(retrievePlayerName(SECOND_PLAYER_SESSION_ID_KEY), CHAT_SPECIFIC_USER, outputMessage);
     }

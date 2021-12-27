@@ -3,7 +3,7 @@ package com.takeaway.dto;
 public class Message {
     private String from;
     private String to;
-    private String text;
+    private Integer text;
 
 //    TODO: rename text to number and change to integer!
 
@@ -20,10 +20,10 @@ public class Message {
     public void setTo(String to) {
         this.to = to;
     }
-    public String getText() {
+    public Integer getText() {
         return text;
     }
-    public void setText(String text) {
+    public void setText(Integer text) {
         this.text = text;
     }
 }
