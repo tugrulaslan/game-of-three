@@ -4,9 +4,7 @@ public class Message {
     private String from;
     private String to;
     private String text;
-    private String bump;
 
-//    TODO: remove bump
 //    TODO: rename text to number and change to integer!
 
     public String getFrom() {
@@ -27,13 +25,5 @@ public class Message {
     }
     public void setText(String text) {
         this.text = text;
-    }
-
-    public String getBump() {
-        return bump;
-    }
-
-    public void setBump(String bump) {
-        this.bump = bump;
     }
 }

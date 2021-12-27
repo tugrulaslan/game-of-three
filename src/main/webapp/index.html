@@ -82,8 +82,7 @@
 	        	var from = sessionId;
 	            var to = nextPlayer;
 	            var text = gameInitiated ? calculatedNumber : number;
-	            var bump = collectBumpValue();
-	            stompClient.send("/app/chat", {}, JSON.stringify({'from':from, 'to':to, 'text':text, 'bump':bump}));
+	            stompClient.send("/app/chat", {}, JSON.stringify({'from':from, 'to':to, 'text':text}));
 	        }
 
 	        function showMessageOutput(messageOutput) {
