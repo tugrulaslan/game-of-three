@@ -5,11 +5,9 @@ import com.takeaway.dto.OutputMessage;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.takeaway.config.SocketVariables.SECURED_CHAT_SPECIFIC_USER;
+import static com.takeaway.config.SocketVariables.CHAT_SPECIFIC_USER;
 
 @Service
 public class GameService {
@@ -31,13 +29,13 @@ public class GameService {
         } else {
             //game continues
             Integer number = (Integer) map.get(NUMBER_KEY);
-            number += Integer.parseInt(message.getText());
+            number += Integer.parseInt(message.getBump());
             number /= 3;
             map.put(NUMBER_KEY, number);
             OutputMessage outputMessage = new OutputMessage(message.getFrom(), String.valueOf(number));
             String nextPlayer = message.getTo();
             outputMessage.setNextPlayer(message.getFrom());
-            template.convertAndSendToUser(nextPlayer, SECURED_CHAT_SPECIFIC_USER, outputMessage);
+            template.convertAndSendToUser(nextPlayer, CHAT_SPECIFIC_USER, outputMessage);
         }
     }
 
@@ -58,17 +56,18 @@ public class GameService {
     }
 
     private void initiateTheGame(Message message) {
-        Integer number = Integer.valueOf(message.getText());
+        //TODO: TO BE RANDOMLY GENERATED from player 1
+        Integer number = Integer.parseInt(message.getText());
         map.put(NUMBER_KEY, number);
         OutputMessage outputMessage = new OutputMessage("server", String.valueOf(number));
         outputMessage.setNextPlayer(retrievePlayerName(FIRST_PLAYER_SESSION_ID_KEY));
-        template.convertAndSendToUser(retrievePlayerName(SECOND_PLAYER_SESSION_ID_KEY), SECURED_CHAT_SPECIFIC_USER, outputMessage);
+        template.convertAndSendToUser(retrievePlayerName(SECOND_PLAYER_SESSION_ID_KEY), CHAT_SPECIFIC_USER, outputMessage);
     }
 
     private void letFirstPlayerBegin() {
         OutputMessage outputMessage = new OutputMessage("server", "Fire the game");
         outputMessage.setNextPlayer(retrievePlayerName(SECOND_PLAYER_SESSION_ID_KEY));
-        template.convertAndSendToUser(retrievePlayerName(FIRST_PLAYER_SESSION_ID_KEY), SECURED_CHAT_SPECIFIC_USER, outputMessage);
+        template.convertAndSendToUser(retrievePlayerName(FIRST_PLAYER_SESSION_ID_KEY), CHAT_SPECIFIC_USER, outputMessage);
     }
 
     private String retrievePlayerName(String userKey) {

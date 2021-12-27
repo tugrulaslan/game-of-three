@@ -5,8 +5,7 @@ import com.takeaway.service.GameService;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
 
-import static com.takeaway.config.SocketVariables.SECURED_CHAT;
-
+import static com.takeaway.config.SocketVariables.CHAT;
 
 @Controller
 public class PlayerInputHandler {
@@ -17,7 +16,7 @@ public class PlayerInputHandler {
         this.gameService = gameService;
     }
 
-    @MessageMapping(SECURED_CHAT)
+    @MessageMapping(CHAT)
     public void handle(Message message) {
         gameService.handlePlayerInput(message);
     }

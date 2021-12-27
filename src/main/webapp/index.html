@@ -57,11 +57,13 @@
 	        }
 
 	        function sendMessage() {
-
+				var bumpList = document.getElementById("bumps");
+				var selectedText = bumpList.options[bumpList.selectedIndex].text;
 	        	var from = sessionId;
-	            var text = document.getElementById('text').value;
 	            var to = nextPlayer;
-	            stompClient.send("/app/chat", {}, JSON.stringify({'from':from, 'to':to, 'text':text}));
+	            var text = document.getElementById('text').value;
+	            var bump = selectedText;
+	            stompClient.send("/app/chat", {}, JSON.stringify({'from':from, 'to':to, 'text':text, 'bump':bump}));
 	        }
 
 	        function showMessageOutput(messageOutput) {
@@ -99,6 +101,14 @@
 			</div>
 		    <br />
 		    <div id="conversationDiv" style="display: none;">
+				<label for="bumps">Bump the value</label>
+
+				<select id="bumps">
+					<option value="-1" selected>-1</option>
+					<option value="0">0</option>
+					<option value="1">1</option>
+				</select>
+				<br />
 		        <input type="text" id="text" placeholder="Write a message..."/>
 		        <button id="sendMessage" onclick="sendMessage();">Send</button>
 		        <p id="response"></p>
