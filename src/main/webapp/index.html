@@ -8,6 +8,7 @@
 	    <script type="text/javascript">
 			var sessionId = '';
 			var nextPlayer = '';
+			var number = '';
 	        var stompClient = null;
 
 	        function setConnected(connected) {
@@ -22,7 +23,7 @@
 
 	        function connect() {
 
-	            var socket = new SockJS('/room');
+	            var socket = new SockJS('/chat');
 	            stompClient = Stomp.over(socket);
 
 
@@ -30,7 +31,7 @@
 	            	setConnected(true);
 					var url = stompClient.ws._transport.url;
 					console.log(stompClient.ws._transport.url);
-					url = url.replace("ws://localhost:8080/room/",  "");
+					url = url.replace("ws://localhost:8080/chat/",  "");
 					url = url.replace("/websocket", "");
 					url = url.replace(/^[0-9]+\//, "");
 					console.log("Your current session is: " + url);
@@ -67,6 +68,13 @@
 	        }
 
 	        function showMessageOutput(messageOutput) {
+	            if(messageOutput.text == null){
+<!--	            	TODO: FIX WITH RANDOM ASSIGNMENT-->
+	            	number = 56;
+	            }else{
+	            	number = messageOutput.text;
+	            }
+	            document.getElementById('text').value = number;
 	        	console.log('inside messageoutput method');
 	        	document.getElementById('conversationDiv').style.display  = 'block';
 	            var response = document.getElementById('response');
@@ -85,12 +93,6 @@
 	<body onload="disconnect()">
 
 		<div>
-
-		
-<!--			<div>-->
-<!--				<input type="text" id="from" placeholder="Choose a nickname"/>-->
-<!--			</div>-->
-<!--			<br />-->
 		    <div>
 		        <button id="connect" onclick="connect();">Connect</button>
 		        <button id="disconnect" disabled="disabled" onclick="disconnect();">Disconnect</button>
@@ -102,14 +104,14 @@
 		    <br />
 		    <div id="conversationDiv" style="display: none;">
 				<label for="bumps">Bump the value</label>
-
 				<select id="bumps">
 					<option value="-1" selected>-1</option>
 					<option value="0">0</option>
 					<option value="1">1</option>
 				</select>
 				<br />
-		        <input type="text" id="text" placeholder="Write a message..."/>
+				<label for="text">Number:</label>
+		        <input type="text" id="text" disabled/>
 		        <button id="sendMessage" onclick="sendMessage();">Send</button>
 		        <p id="response"></p>
 		    </div>

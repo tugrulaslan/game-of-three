@@ -5,8 +5,9 @@ public class OutputMessage {
     private String from;
     private String nextPlayer;
     private String text;
-    private boolean init;
-    private String clientId;
+
+    public OutputMessage() {
+    }
 
     public OutputMessage(final String from, final String text) {
 
@@ -28,13 +29,5 @@ public class OutputMessage {
 
     public String getFrom() {
         return from;
-    }
-
-    public boolean isInit() {
-        return init;
-    }
-
-    public String getClientId() {
-        return clientId;
     }
 }

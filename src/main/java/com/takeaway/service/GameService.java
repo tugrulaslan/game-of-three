@@ -65,7 +65,7 @@ public class GameService {
     }
 
     private void letFirstPlayerBegin() {
-        OutputMessage outputMessage = new OutputMessage("server", "Fire the game");
+        OutputMessage outputMessage = new OutputMessage();
         outputMessage.setNextPlayer(retrievePlayerName(SECOND_PLAYER_SESSION_ID_KEY));
         template.convertAndSendToUser(retrievePlayerName(FIRST_PLAYER_SESSION_ID_KEY), CHAT_SPECIFIC_USER, outputMessage);
     }
