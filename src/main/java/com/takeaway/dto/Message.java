@@ -6,6 +6,9 @@ public class Message {
     private String text;
     private String bump;
 
+//    TODO: remove bump
+//    TODO: rename text to number and change to integer!
+
     public String getFrom() {
         return from;
     }

@@ -8,8 +8,28 @@
 	    <script type="text/javascript">
 			var sessionId = '';
 			var nextPlayer = '';
-			var number = '';
+			var number = 0;
+			var calculatedNumber = 0;
+			var gameInitiated = false;
 	        var stompClient = null;
+
+	        function calculateNumber(){
+				calculatedNumber = number;
+	        	console.log("inside calculateNumber method");
+				var selectedBump = parseInt(collectBumpValue());
+				console.log("value from combo: " + selectedBump);
+				calculatedNumber += selectedBump;
+<!--				TODO: ADD THIS MAGICAL NUMBER 3 AS PER REQUESTED AS CONFIGURABLE!!!-->
+				calculatedNumber /= 3;
+				calculatedNumber = Math.round(calculatedNumber);
+				console.log('calculated number is: ' + calculatedNumber);
+				document.getElementById('calculatedText').value = calculatedNumber;
+	        }
+
+	        function collectBumpValue(){
+	        	var bumpList = document.getElementById("bumps");
+				return bumpList.options[bumpList.selectedIndex].text;
+	        }
 
 	        function setConnected(connected) {
 
@@ -17,6 +37,7 @@
 	            document.getElementById('disconnect').disabled = !connected;
 <!--	            document.getElementById('conversationDiv').style.visibility = connected ? 'visible' : 'hidden';-->
 	            document.getElementById('sessionInfoDiv').style.visibility = connected ? 'visible' : 'hidden';
+	            document.getElementById('bumpsDiv').style.visibility = gameInitiated ? 'visible' : 'hidden';
 	            document.getElementById('response').innerHTML = '';
 
 	        }
@@ -58,25 +79,27 @@
 	        }
 
 	        function sendMessage() {
-				var bumpList = document.getElementById("bumps");
-				var selectedText = bumpList.options[bumpList.selectedIndex].text;
 	        	var from = sessionId;
 	            var to = nextPlayer;
-	            var text = document.getElementById('text').value;
-	            var bump = selectedText;
+	            var text = gameInitiated ? calculatedNumber : number;
+	            var bump = collectBumpValue();
 	            stompClient.send("/app/chat", {}, JSON.stringify({'from':from, 'to':to, 'text':text, 'bump':bump}));
 	        }
 
 	        function showMessageOutput(messageOutput) {
 	            if(messageOutput.text == null){
+<!--	            TODO:change text to number!"-->
 <!--	            	TODO: FIX WITH RANDOM ASSIGNMENT-->
 	            	number = 56;
 	            }else{
-	            	number = messageOutput.text;
+	            	number = parseInt(messageOutput.text);
+	            	gameInitiated = true;
 	            }
 	            document.getElementById('text').value = number;
+	            calculateNumber();
 	        	console.log('inside messageoutput method');
 	        	document.getElementById('conversationDiv').style.display  = 'block';
+	        	document.getElementById('bumpsDiv').style.visibility = gameInitiated ? 'visible' : 'hidden';
 	            var response = document.getElementById('response');
 	            nextPlayer = messageOutput.nextPlayer;
 	            console.log('nextplayer is:' + nextPlayer);
@@ -103,16 +126,22 @@
 			</div>
 		    <br />
 		    <div id="conversationDiv" style="display: none;">
-				<label for="bumps">Bump the value</label>
-				<select id="bumps">
-					<option value="-1" selected>-1</option>
-					<option value="0">0</option>
-					<option value="1">1</option>
-				</select>
-				<br />
-				<label for="text">Number:</label>
-		        <input type="text" id="text" disabled/>
-		        <button id="sendMessage" onclick="sendMessage();">Send</button>
+				<label for="text">Passed Number:</label>
+				<input type="text" id="text" disabled/>
+				<button id="sendMessage" onclick="sendMessage();">Send</button>
+				<div id="bumpsDiv">
+					<label for="bumps">Bump the value</label>
+					<select id="bumps" onchange="calculateNumber()">
+						<option value="-1" selected>-1</option>
+						<option value="0">0</option>
+						<option value="1">1</option>
+					</select>
+					<br />
+
+					<label for="calculatedText">Calculated Number:</label>
+					<input type="text" id="calculatedText" disabled/>
+				</div>
+<!--				TODO: remove this silly cow responses-->
 		        <p id="response"></p>
 		    </div>
 		</div>

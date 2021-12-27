@@ -27,12 +27,9 @@ public class GameService {
         if (gameIsNotInitiated()) {
             initiateTheGame(message);
         } else {
-            //game continues
-            Integer number = (Integer) map.get(NUMBER_KEY);
-            number += Integer.parseInt(message.getBump());
-            number /= 3;
-            map.put(NUMBER_KEY, number);
-            OutputMessage outputMessage = new OutputMessage(message.getFrom(), String.valueOf(number));
+            map.put(NUMBER_KEY, Integer.parseInt(message.getText()));
+//            TODO: TRY TO USE INTEGER with the output messgage text number
+            OutputMessage outputMessage = new OutputMessage(message.getFrom(), message.getText());
             String nextPlayer = message.getTo();
             outputMessage.setNextPlayer(message.getFrom());
             template.convertAndSendToUser(nextPlayer, CHAT_SPECIFIC_USER, outputMessage);
@@ -56,8 +53,8 @@ public class GameService {
     }
 
     private void initiateTheGame(Message message) {
-        //TODO: TO BE RANDOMLY GENERATED from player 1
         Integer number = Integer.parseInt(message.getText());
+        //TODO: remove the number keeping logic wont be needed
         map.put(NUMBER_KEY, number);
         OutputMessage outputMessage = new OutputMessage("server", String.valueOf(number));
         outputMessage.setNextPlayer(retrievePlayerName(FIRST_PLAYER_SESSION_ID_KEY));
