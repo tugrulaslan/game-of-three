@@ -28,7 +28,7 @@ public class WebSocketEventListener {
         } else if (event instanceof SessionConnectedEvent) {
             System.out.println("2. second phase after session connect event -> in this phase we shall send user some payload");
         } else if (event instanceof SessionSubscribeEvent) {
-            gameService.handleSubscribedEvent((String) message.getHeaders().get(SimpMessageHeaderAccessor.SESSION_ID_HEADER));
+            gameService.handleNewGamer((String) message.getHeaders().get(SimpMessageHeaderAccessor.SESSION_ID_HEADER));
             System.out.println("3. third phase user sends session subscribe event");
 
         }
