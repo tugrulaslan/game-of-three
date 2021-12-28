@@ -17,13 +17,10 @@
 
 	        function calculateNumber(){
 				calculatedNumber = number;
-	        	console.log("inside calculateNumber method");
 				var selectedBump = parseInt(collectBumpValue());
-				console.log("value from combo: " + selectedBump);
 				calculatedNumber += selectedBump;
 				calculatedNumber /= divisionNumber;
 				calculatedNumber = Math.round(calculatedNumber);
-				console.log('calculated number is: ' + calculatedNumber);
 				document.getElementById('calculatedText').value = calculatedNumber;
 				if(calculatedNumber == winningNumber) {
 					 alert("you win!!");
@@ -36,34 +33,27 @@
 	        }
 
 	        function setConnected(connected) {
-
 	            document.getElementById('connect').disabled = connected;
 	            document.getElementById('disconnect').disabled = !connected;
-<!--	            document.getElementById('conversationDiv').style.visibility = connected ? 'visible' : 'hidden';-->
 	            document.getElementById('sessionInfoDiv').style.visibility = connected ? 'visible' : 'hidden';
 	            document.getElementById('bumpsDiv').style.visibility = gameInitiated ? 'visible' : 'hidden';
 	            document.getElementById('response').innerHTML = '';
-
 	        }
 
-	        function connect() {
-
-	            var socket = new SockJS('/chat');
-	            stompClient = Stomp.over(socket);
-
-
-	            stompClient.connect({}, function(frame) {
-	            	setConnected(true);
-					var url = stompClient.ws._transport.url;
-					console.log(stompClient.ws._transport.url);
+	        function retrieveSessionId(url){
 					url = url.replace("ws://localhost:8080/chat/",  "");
 					url = url.replace("/websocket", "");
 					url = url.replace(/^[0-9]+\//, "");
-					console.log("Your current session is: " + url);
-					sessionId = url;
-	                console.log('Connected: ' + frame);
+					return url;
+	        }
+
+	        function connect() {
+	            var socket = new SockJS('/chat');
+	            stompClient = Stomp.over(socket);
+	            stompClient.connect({}, function(frame) {
+	            	setConnected(true);
+					sessionId = retrieveSessionId(stompClient.ws._transport.url);
 	                var queue = '/user/'+sessionId+'/queue/specific-user';
-	                console.log('will subscribe to: ' + queue);
 	                document.getElementById('sessionInfoDiv').style.visibility = 'visible;';
 	            	document.getElementById('player-sessionid').value = sessionId;
 	                stompClient.subscribe(queue, function(messageOutput) {
@@ -79,7 +69,6 @@
 	            }
 
 	            setConnected(false);
-	            console.log("Disconnected");
 	        }
 
 	        function sendMessage() {
@@ -100,14 +89,11 @@
 	            divisionNumber = messageOutput.divisionNumber;
 	            winningNumber = messageOutput.winningNumber;
 	            calculateNumber();
-	        	console.log('inside messageoutput method');
 	        	document.getElementById("sendMessage").disabled = false;
 	        	document.getElementById('conversationDiv').style.display  = 'block';
 	        	document.getElementById('bumpsDiv').style.visibility = gameInitiated ? 'visible' : 'hidden';
 	            var response = document.getElementById('response');
 	            nextPlayer = messageOutput.nextPlayer;
-	            console.log('nextplayer is:' + nextPlayer);
-	          	console.log("is it loading?");
 	            var p = document.createElement('p');
 	            p.style.wordWrap = 'break-word';
 	            p.appendChild(document.createTextNode(messageOutput.from + ": " + messageOutput.number));
