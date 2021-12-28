@@ -1,7 +1,6 @@
 package com.takeaway.service;
 
 import com.takeaway.config.ProgramConfiguration;
-import com.takeaway.dto.Message;
 import com.takeaway.dto.OutputMessage;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
@@ -23,9 +22,9 @@ public class GameService {
         this.template = template;
     }
 
-    public void handlePlayerInput(Message message) {
+    public void handlePlayerInput(OutputMessage message) {
         OutputMessage outputMessage = new OutputMessage(message.getFrom(), message.getNumber());
-        String nextPlayer = message.getTo();
+        String nextPlayer = message.getNextPlayer();
         outputMessage.setNextPlayer(message.getFrom());
         outputMessage.setDivisionNumber(programConfiguration.getDivisionNumber());
         outputMessage.setWinningNumber(programConfiguration.getWinningNumber());

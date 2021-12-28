@@ -83,12 +83,10 @@
 	        }
 
 	        function sendMessage() {
-	        	var from = sessionId;
-	            var to = nextPlayer;
 	            var text = gameInitiated ? calculatedNumber : document.getElementById('text').value;
 	            document.getElementById("text").disabled = true;
 	            document.getElementById("sendMessage").disabled = true;
-	            stompClient.send("/app/chat", {}, JSON.stringify({'from':from, 'to':to, 'number':text}));
+	            stompClient.send("/app/chat", {}, JSON.stringify({'from':sessionId, 'nextPlayer':nextPlayer, 'number':text}));
 	        }
 
 	        function showMessageOutput(messageOutput) {

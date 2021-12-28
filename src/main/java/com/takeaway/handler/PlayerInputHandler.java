@@ -1,6 +1,6 @@
 package com.takeaway.handler;
 
-import com.takeaway.dto.Message;
+import com.takeaway.dto.OutputMessage;
 import com.takeaway.service.GameService;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
@@ -17,7 +17,7 @@ public class PlayerInputHandler {
     }
 
     @MessageMapping(CHAT_QUEUE_NAME)
-    public void handle(Message message) {
+    public void handle(OutputMessage message) {
         gameService.handlePlayerInput(message);
     }
 }
