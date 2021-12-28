@@ -81,26 +81,29 @@
 	        function sendMessage() {
 	        	var from = sessionId;
 	            var to = nextPlayer;
-	            var text = gameInitiated ? calculatedNumber : number;
+	            var text = gameInitiated ? calculatedNumber : document.getElementById('text').value;
+	            document.getElementById("text").disabled = true;
+	            document.getElementById("sendMessage").disabled = true;
 	            stompClient.send("/app/chat", {}, JSON.stringify({'from':from, 'to':to, 'number':text}));
 	        }
 
 	        function showMessageOutput(messageOutput) {
 	            if(messageOutput.number == null){
-<!--	            	TODO: FIX WITH RANDOM ASSIGNMENT-->
-	            	number = 56;
 	            }else{
 	            	number = parseInt(messageOutput.number);
 	            	gameInitiated = true;
+	            	document.getElementById("text").disabled = true;
+	            	document.getElementById('text').value = number;
 	            }
-	            document.getElementById('text').value = number;
 	            calculateNumber();
 	        	console.log('inside messageoutput method');
+	        	document.getElementById("sendMessage").disabled = false;
 	        	document.getElementById('conversationDiv').style.display  = 'block';
 	        	document.getElementById('bumpsDiv').style.visibility = gameInitiated ? 'visible' : 'hidden';
 	            var response = document.getElementById('response');
 	            nextPlayer = messageOutput.nextPlayer;
 	            console.log('nextplayer is:' + nextPlayer);
+	          	console.log("is it loading?");
 	            var p = document.createElement('p');
 	            p.style.wordWrap = 'break-word';
 	            p.appendChild(document.createTextNode(messageOutput.from + ": " + messageOutput.number));
@@ -124,8 +127,8 @@
 			</div>
 		    <br />
 		    <div id="conversationDiv" style="display: none;">
-				<label for="text">Passed Number:</label>
-				<input type="text" id="text" disabled/>
+				<label for="text">Number:</label>
+				<input type="text" id="text" placeholder="Pick a number..."/>
 				<button id="sendMessage" onclick="sendMessage();">Send</button>
 				<div id="bumpsDiv">
 					<label for="bumps">Bump the value</label>
