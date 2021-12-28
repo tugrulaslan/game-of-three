@@ -1,7 +1,7 @@
 package com.takeaway.service;
 
 import com.takeaway.config.ProgramConfiguration;
-import com.takeaway.dto.OutputMessage;
+import com.takeaway.dto.Message;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
@@ -22,13 +22,9 @@ public class GameService {
         this.template = template;
     }
 
-    public void handlePlayerInput(OutputMessage message) {
-        OutputMessage outputMessage = new OutputMessage(message.getFrom(), message.getNumber());
-        String nextPlayer = message.getNextPlayer();
-        outputMessage.setNextPlayer(message.getFrom());
-        outputMessage.setDivisionNumber(programConfiguration.getDivisionNumber());
-        outputMessage.setWinningNumber(programConfiguration.getWinningNumber());
-        template.convertAndSendToUser(nextPlayer, CHAT_SPECIFIC_USER_NAME, outputMessage);
+    public void handlePlayerInput(Message playerMessage) {
+        Message message = prepareNextPlayerMessage(playerMessage);
+        template.convertAndSendToUser(playerMessage.getNextPlayer(), CHAT_SPECIFIC_USER_NAME, message);
     }
 
     public void handleNewGamer(String clientSessionId) {
@@ -39,17 +35,27 @@ public class GameService {
         }
     }
 
+    private Message prepareNextPlayerMessage(Message playerMessage) {
+        Message message = new Message();
+        message.setFrom(playerMessage.getFrom());
+        message.setNumber(playerMessage.getNumber());
+        message.setNextPlayer(playerMessage.getFrom());
+        message.setDivisionNumber(programConfiguration.getDivisionNumber());
+        message.setWinningNumber(programConfiguration.getWinningNumber());
+        return message;
+    }
+
     private boolean isThereAnyAvailablePlayerWaiting() {
         return waitingRoom.size() == 0;
     }
 
     private void letFirstPlayerBegin(String secondPlayerId) {
-        OutputMessage outputMessage = new OutputMessage();
-        outputMessage.setNextPlayer(secondPlayerId);
-        outputMessage.setDivisionNumber(programConfiguration.getDivisionNumber());
-        outputMessage.setWinningNumber(programConfiguration.getWinningNumber());
+        Message message = new Message();
+        message.setNextPlayer(secondPlayerId);
+        message.setDivisionNumber(programConfiguration.getDivisionNumber());
+        message.setWinningNumber(programConfiguration.getWinningNumber());
         String firstPlayerId = waitingRoom.stream().findFirst().get();
         waitingRoom.clear();
-        template.convertAndSendToUser(firstPlayerId, CHAT_SPECIFIC_USER_NAME, outputMessage);
+        template.convertAndSendToUser(firstPlayerId, CHAT_SPECIFIC_USER_NAME, message);
     }
 }

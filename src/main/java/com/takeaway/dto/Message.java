@@ -1,6 +1,6 @@
 package com.takeaway.dto;
 
-public class OutputMessage {
+public class Message {
 
     private String from;
     private String nextPlayer;
@@ -8,29 +8,31 @@ public class OutputMessage {
     private Integer divisionNumber;
     private Integer winningNumber;
 
-    public OutputMessage() {
+    public Message() {
     }
 
-    public OutputMessage(final String from, final Integer number) {
+    public String getFrom() {
+        return from;
+    }
 
+    public void setFrom(String from) {
         this.from = from;
-        this.number = number;
-    }
-
-    public void setNextPlayer(String nextPlayer) {
-        this.nextPlayer = nextPlayer;
     }
 
     public String getNextPlayer() {
         return nextPlayer;
     }
 
+    public void setNextPlayer(String nextPlayer) {
+        this.nextPlayer = nextPlayer;
+    }
+
     public Integer getNumber() {
         return number;
     }
 
-    public String getFrom() {
-        return from;
+    public void setNumber(Integer number) {
+        this.number = number;
     }
 
     public Integer getDivisionNumber() {
