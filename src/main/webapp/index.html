@@ -37,7 +37,6 @@
 	            document.getElementById('disconnect').disabled = !connected;
 	            document.getElementById('sessionInfoDiv').style.visibility = connected ? 'visible' : 'hidden';
 	            document.getElementById('bumpsDiv').style.visibility = gameInitiated ? 'visible' : 'hidden';
-	            document.getElementById('response').innerHTML = '';
 	        }
 
 	        function retrieveSessionId(url){
@@ -92,12 +91,7 @@
 	        	document.getElementById("sendMessage").disabled = false;
 	        	document.getElementById('conversationDiv').style.display  = 'block';
 	        	document.getElementById('bumpsDiv').style.visibility = gameInitiated ? 'visible' : 'hidden';
-	            var response = document.getElementById('response');
 	            nextPlayer = messageOutput.nextPlayer;
-	            var p = document.createElement('p');
-	            p.style.wordWrap = 'break-word';
-	            p.appendChild(document.createTextNode(messageOutput.from + ": " + messageOutput.number));
-	            response.appendChild(p);
 	        }
 
 	    </script>
@@ -132,8 +126,6 @@
 					<label for="calculatedText">Calculated Number:</label>
 					<input type="text" id="calculatedText" disabled/>
 				</div>
-<!--				TODO: remove this silly cow responses-->
-		        <p id="response"></p>
 		    </div>
 		</div>
 
