@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import static com.takeaway.config.SocketVariables.CHAT_SPECIFIC_USER;
+import static com.takeaway.config.SocketVariables.CHAT_SPECIFIC_USER_NAME;
 
 @Service
 public class GameService {
@@ -29,7 +29,7 @@ public class GameService {
         outputMessage.setNextPlayer(message.getFrom());
         outputMessage.setDivisionNumber(programConfiguration.getDivisionNumber());
         outputMessage.setWinningNumber(programConfiguration.getWinningNumber());
-        template.convertAndSendToUser(nextPlayer, CHAT_SPECIFIC_USER, outputMessage);
+        template.convertAndSendToUser(nextPlayer, CHAT_SPECIFIC_USER_NAME, outputMessage);
     }
 
     public void handleNewGamer(String clientSessionId) {
@@ -51,6 +51,6 @@ public class GameService {
         outputMessage.setWinningNumber(programConfiguration.getWinningNumber());
         String firstPlayerId = waitingRoom.stream().findFirst().get();
         waitingRoom.clear();
-        template.convertAndSendToUser(firstPlayerId, CHAT_SPECIFIC_USER, outputMessage);
+        template.convertAndSendToUser(firstPlayerId, CHAT_SPECIFIC_USER_NAME, outputMessage);
     }
 }

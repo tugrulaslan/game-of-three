@@ -6,7 +6,7 @@ import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBr
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
-import static com.takeaway.config.SocketVariables.CHAT;
+import static com.takeaway.config.SocketVariables.CHAT_QUEUE_NAME;
 
 @Configuration
 @EnableWebSocketMessageBroker
@@ -21,7 +21,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint(CHAT).withSockJS();
+        registry.addEndpoint(CHAT_QUEUE_NAME).withSockJS();
     }
-
 }
