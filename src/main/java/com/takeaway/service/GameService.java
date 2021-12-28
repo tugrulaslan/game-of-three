@@ -28,6 +28,7 @@ public class GameService {
         String nextPlayer = message.getTo();
         outputMessage.setNextPlayer(message.getFrom());
         outputMessage.setDivisionNumber(programConfiguration.getDivisionNumber());
+        outputMessage.setWinningNumber(programConfiguration.getWinningNumber());
         template.convertAndSendToUser(nextPlayer, CHAT_SPECIFIC_USER, outputMessage);
     }
 
@@ -47,6 +48,7 @@ public class GameService {
         OutputMessage outputMessage = new OutputMessage();
         outputMessage.setNextPlayer(secondPlayerId);
         outputMessage.setDivisionNumber(programConfiguration.getDivisionNumber());
+        outputMessage.setWinningNumber(programConfiguration.getWinningNumber());
         String firstPlayerId = waitingRoom.stream().findFirst().get();
         waitingRoom.clear();
         template.convertAndSendToUser(firstPlayerId, CHAT_SPECIFIC_USER, outputMessage);

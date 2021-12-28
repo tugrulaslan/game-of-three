@@ -13,6 +13,7 @@
 			var gameInitiated = false;
 	        var stompClient = null;
 	        var divisionNumber = 0;
+	        var winningNumber = 0;
 
 	        function calculateNumber(){
 				calculatedNumber = number;
@@ -24,6 +25,9 @@
 				calculatedNumber = Math.round(calculatedNumber);
 				console.log('calculated number is: ' + calculatedNumber);
 				document.getElementById('calculatedText').value = calculatedNumber;
+				if(calculatedNumber == winningNumber) {
+					 alert("you win!!");
+				}
 	        }
 
 	        function collectBumpValue(){
@@ -96,6 +100,7 @@
 	            	document.getElementById('text').value = number;
 	            }
 	            divisionNumber = messageOutput.divisionNumber;
+	            winningNumber = messageOutput.winningNumber;
 	            calculateNumber();
 	        	console.log('inside messageoutput method');
 	        	document.getElementById("sendMessage").disabled = false;

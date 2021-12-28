@@ -6,6 +6,7 @@ public class OutputMessage {
     private String nextPlayer;
     private Integer number;
     private Integer divisionNumber;
+    private Integer winningNumber;
 
     public OutputMessage() {
     }
@@ -38,5 +39,13 @@ public class OutputMessage {
 
     public void setDivisionNumber(Integer divisionNumber) {
         this.divisionNumber = divisionNumber;
+    }
+
+    public Integer getWinningNumber() {
+        return winningNumber;
+    }
+
+    public void setWinningNumber(Integer winningNumber) {
+        this.winningNumber = winningNumber;
     }
 }
