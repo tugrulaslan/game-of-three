@@ -12,6 +12,7 @@
 			var calculatedNumber = 0;
 			var gameInitiated = false;
 	        var stompClient = null;
+	        var divisionNumber = 0;
 
 	        function calculateNumber(){
 				calculatedNumber = number;
@@ -19,8 +20,7 @@
 				var selectedBump = parseInt(collectBumpValue());
 				console.log("value from combo: " + selectedBump);
 				calculatedNumber += selectedBump;
-<!--				TODO: ADD THIS MAGICAL NUMBER 3 AS PER REQUESTED AS CONFIGURABLE!!!-->
-				calculatedNumber /= 3;
+				calculatedNumber /= divisionNumber;
 				calculatedNumber = Math.round(calculatedNumber);
 				console.log('calculated number is: ' + calculatedNumber);
 				document.getElementById('calculatedText').value = calculatedNumber;
@@ -90,11 +90,12 @@
 	        function showMessageOutput(messageOutput) {
 	            if(messageOutput.number == null){
 	            }else{
-	            	number = parseInt(messageOutput.number);
+	            	number = messageOutput.number;
 	            	gameInitiated = true;
 	            	document.getElementById("text").disabled = true;
 	            	document.getElementById('text').value = number;
 	            }
+	            divisionNumber = messageOutput.divisionNumber;
 	            calculateNumber();
 	        	console.log('inside messageoutput method');
 	        	document.getElementById("sendMessage").disabled = false;

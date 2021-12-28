@@ -1,5 +1,6 @@
 package com.takeaway.service;
 
+import com.takeaway.config.ProgramConfiguration;
 import com.takeaway.dto.Message;
 import com.takeaway.dto.OutputMessage;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -13,9 +14,12 @@ import static com.takeaway.config.SocketVariables.CHAT_SPECIFIC_USER;
 public class GameService {
     private CopyOnWriteArrayList<String> waitingRoom = new CopyOnWriteArrayList();
 
+    private final ProgramConfiguration programConfiguration;
     private final SimpMessagingTemplate template;
 
-    public GameService(SimpMessagingTemplate template) {
+    public GameService(ProgramConfiguration programConfiguration,
+                       SimpMessagingTemplate template) {
+        this.programConfiguration = programConfiguration;
         this.template = template;
     }
 
@@ -23,6 +27,7 @@ public class GameService {
         OutputMessage outputMessage = new OutputMessage(message.getFrom(), message.getNumber());
         String nextPlayer = message.getTo();
         outputMessage.setNextPlayer(message.getFrom());
+        outputMessage.setDivisionNumber(programConfiguration.getDivisionNumber());
         template.convertAndSendToUser(nextPlayer, CHAT_SPECIFIC_USER, outputMessage);
     }
 
@@ -41,6 +46,7 @@ public class GameService {
     private void letFirstPlayerBegin(String secondPlayerId) {
         OutputMessage outputMessage = new OutputMessage();
         outputMessage.setNextPlayer(secondPlayerId);
+        outputMessage.setDivisionNumber(programConfiguration.getDivisionNumber());
         String firstPlayerId = waitingRoom.stream().findFirst().get();
         waitingRoom.clear();
         template.convertAndSendToUser(firstPlayerId, CHAT_SPECIFIC_USER, outputMessage);

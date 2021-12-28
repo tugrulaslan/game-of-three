@@ -5,6 +5,7 @@ public class OutputMessage {
     private String from;
     private String nextPlayer;
     private Integer number;
+    private Integer divisionNumber;
 
     public OutputMessage() {
     }
@@ -29,5 +30,13 @@ public class OutputMessage {
 
     public String getFrom() {
         return from;
+    }
+
+    public Integer getDivisionNumber() {
+        return divisionNumber;
+    }
+
+    public void setDivisionNumber(Integer divisionNumber) {
+        this.divisionNumber = divisionNumber;
     }
 }
